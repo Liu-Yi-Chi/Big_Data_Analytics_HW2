@@ -1,9 +1,9 @@
 ## Big Data Analytics Homework-2
-####  M10502282 ¼B«³¨ä
+####  M10502282 
 
 ------------
-###XGBoost Article
-#####Import Libraries:
+### XGBoost Article
+##### Import Libraries:
 ```python
 import pandas as pd
 import numpy as np
@@ -17,13 +17,13 @@ import matplotlib.pylab as plt
 from matplotlib.pylab import rcParams
 rcParams['figure.figsize'] = 12, 4
 ```
-#####Load Data:
+##### Load Data:
 ```python
 data = pd.read_csv('Dataset/train/LargeTrain.csv')
 train = pd.DataFrame(data)
 target = 'Class'
 ```
-#####Define a function for modeling and cross-validation
+##### Define a function for modeling and cross-validation
 ```python
 def modelfit(alg, dtrain, predictors, performCV=True, printFeatureImportance=True, cv_folds=5):
     #Fit the algorithm on the data
@@ -50,7 +50,7 @@ def modelfit(alg, dtrain, predictors, performCV=True, printFeatureImportance=Tru
         feat_imp.plot(kind='bar', title='Feature Importances')
         plt.ylabel('Feature Importance Score')
 ```
-####Step 1: Fix learning rate and number of estimators for tuning tree-based parameters
+#### Step 1: Fix learning rate and number of estimators for tuning tree-based parameters
 ```python
 predictors = [x for x in train.columns if x not in [target]]
 xgb1 = XGBClassifier(
@@ -70,7 +70,7 @@ modelfit(xgb1, train, predictors)
 ![](https://github.com/Liu-Yi-Chi/Big_Data_Analytics_HW2/blob/master/img/Default.PNG)
 
 ------------
-####Step 2: Tune max_depth and min_child_weight
+#### Step 2: Tune max_depth and min_child_weight
 ```python
 param_test1 = {
  'max_depth':range(3,10,2),
@@ -85,7 +85,7 @@ gsearch1.grid_scores_, gsearch1.best_params_, gsearch1.best_score_
 The ideal values are 9 for max_depth and 1 for min_child_weight
 
 ------------
-####Step 3: Tune gamma
+#### Step 3: Tune gamma
 ```python
 param_test3 = {
  'gamma':[i/10.0 for i in range(0,5)]
@@ -100,7 +100,7 @@ gsearch3.grid_scores_, gsearch3.best_params_, gsearch3.best_score_
  0 is the optimum one
 
 ------------
-####Step 4: Tune subsample and colsample_bytree
+#### Step 4: Tune subsample and colsample_bytree
 ```python
 param_test4 = {
  'subsample':[i/10.0 for i in range(6,10)],
@@ -116,7 +116,7 @@ gsearch4.grid_scores_, gsearch4.best_params_, gsearch4.best_score_
 The ideal values are 0.9 for subsample and 0.6 for colsample_bytree
 
 ------------
-####Step 5: Tuning Regularization Parameters
+#### Step 5: Tuning Regularization Parameters
 ```python
 param_test6 = {
  'reg_alpha':[1e-5, 1e-2, 0.1, 1, 100]
@@ -129,7 +129,7 @@ gsearch6.fit(train[predictors],train[target])
 gsearch6.grid_scores_, gsearch6.best_params_, gsearch6.best_score_
 ```
 we got a better reg_alpha=0.1
-#####Now we can apply this regularization in the model and look at the impact:
+##### Now we can apply this regularization in the model and look at the impact:
 ```python
 xgb3 = XGBClassifier(
  learning_rate =0.1,
@@ -149,8 +149,8 @@ modelfit(xgb3, train, predictors)
 ![](https://github.com/Liu-Yi-Chi/Big_Data_Analytics_HW2/blob/master/img/Tune.PNG)
 
 ------------
-###GBM Parameters
-#####Lets start by importing the required libraries and loading the data:
+### GBM Parameters
+##### Lets start by importing the required libraries and loading the data:
 ```python
 import pandas as pd
 import numpy as np
@@ -167,7 +167,7 @@ data = pd.read_csv('Dataset/train/LargeTrain.csv')
 train = pd.DataFrame(data)
 target = 'Class'
 ```
-####Step 1- Find the number of estimators for a high learning rate
+#### Step 1- Find the number of estimators for a high learning rate
 ```python
 predictors = [x for x in train.columns if x not in [target]]
 param_test1 = {'n_estimators':range(20,81,10)}
@@ -180,7 +180,7 @@ gsearch1.grid_scores_, gsearch1.best_params_, gsearch1.best_score_
 The ideal values are 80 for n_estimators
 
 ------------
-####Step 2- Tune tree-specific parameters
+#### Step 2- Tune tree-specific parameters
 - Tune max_depth and num_samples_split
 
 
@@ -221,7 +221,7 @@ gsearch4.grid_scores_, gsearch4.best_params_, gsearch4.best_score_
 The ideal values are 19 for max_features
 
 ------------
-####Step3- Tune Subsample and Lower Learning Rate
+#### Step3- Tune Subsample and Lower Learning Rate
 
 ```python
 param_test5 = {'subsample':[0.6,0.7,0.75,0.8,0.85,0.9]}
